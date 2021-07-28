@@ -1,0 +1,8 @@
+
+
+
+```
+docker build -t clusterprofiler:4.0.2 -f Dockerfile.clusterProfiler4.0.2 .
+docker tag clusterprofiler:4.0.2 xie186/r4bix:clusterprofiler.4.0.2
+docker push xie186/r4bix:clusterprofiler.4.0.2
+```
