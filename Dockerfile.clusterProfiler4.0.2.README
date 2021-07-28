@@ -13,4 +13,7 @@ docker push xie186/r4bix:clusterprofiler.4.0.2
 singularity -d build xie186_r4bix_clusterprofiler.4.0.2.img docker://xie186/r4bix:clusterprofiler.4.0.2
 
 
+singularity run --nv xie186_r4bix_clusterprofiler.4.0.2.img jupyter-lab --ip=bell-fe03.rcac.purdue.edu --allow-root --NotebookApp.token='x123456' --port=8689 --no-browser
+
+
 ```
