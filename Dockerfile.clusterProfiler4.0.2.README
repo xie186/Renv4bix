@@ -5,4 +5,12 @@
 docker build -t clusterprofiler:4.0.2 -f Dockerfile.clusterProfiler4.0.2 .
 docker tag clusterprofiler:4.0.2 xie186/r4bix:clusterprofiler.4.0.2
 docker push xie186/r4bix:clusterprofiler.4.0.2
+
+
+##
+#export SINGULARITY_TMPDIR=/depot/bioinfo/data/Projects/HF_Brachy/Bd_Hf_larvae/software/docker_centos_7
+#SINGULARITY_CACHEDIR=$SINGULAIRTY_TMPDIR/cache
+singularity -d build xie186_r4bix_clusterprofiler.4.0.2.img docker://xie186/r4bix:clusterprofiler.4.0.2
+
+
 ```
