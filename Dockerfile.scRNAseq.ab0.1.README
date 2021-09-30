@@ -1,0 +1,8 @@
+
+
+```
+docker build -t scrna.ab0.1 -f Dockerfile.scRNAseq.ab0.1 .
+docker tag crna.ab0.1 xie186/r4bix:scrna.3.1.1
+docker push xie186/r4bix:scrna.3.1.1
+
+```

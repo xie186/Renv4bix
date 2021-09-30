@@ -1,0 +1,19 @@
+
+
+
+```
+docker build -t dmrcaller:1.24.0 -f Dockerfile.dmrcaller.1.24.0 .
+docker tag dmrcaller:1.24.0 xie186/r4bix:dmrcaller.1.24.0
+docker push xie186/r4bix:dmrcaller.1.24.0
+
+
+##
+#export SINGULARITY_TMPDIR=/depot/bioinfo/data/Projects/HF_Brachy/Bd_Hf_larvae/software/docker_centos_7
+#SINGULARITY_CACHEDIR=$SINGULAIRTY_TMPDIR/cache
+singularity -d build xie186_r4bix_dmrcaller.1.24.0.img docker://xie186/r4bix:dmrcaller.1.24.0
+
+
+singularity run --nv xie186_r4bix_dmrcaller.1.24.0.img jupyter-lab --ip=bell-fe03.rcac.purdue.edu --allow-root --NotebookApp.token='x123456' --port=8689 --no-browser
+
+
+```
