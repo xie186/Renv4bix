@@ -66,32 +66,32 @@ RUN R -e 'install.packages("pkgbuild")'
 #ADD install_cran.R /tmp/
 #RUN R -f /tmp/install_cran.R
 
-#DMRcaller
-RUN R -e 'devtools::install_version("DMRcaller", version="1.24.0", repos=c("https://bioconductor.org/packages/3.13/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+#ggplot2 
+RUN R -e 'devtools::install_version("ggplot2", version="3.3.5", repos=c("https://bioconductor.org/packages/3.13/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
 
 
 RUN R -e 'devtools::install_version("IRkernel", version = "1.1.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
 RUN R -e 'IRkernel::installspec(name = "R", displayname = "R-4.0.2", user = FALSE)'
-## 1.18.1
-RUN R -e 'devtools::install_version("ggnewscale", version="0.4.5", repos=c("http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
-RUN R -e 'devtools::install_version("org.Hs.eg.db", version="3.13.0", repos="https://bioconductor.org/packages/3.13/data/annotation",upgrade = "never", force = TRUE)'
-RUN R -e 'devtools::install_version("org.Dm.eg.db", version="3.13.0", repos=c("https://bioconductor.org/packages/3.13/data/annotation"),upgrade = "never", force = TRUE)'
 
-RUN R -e 'devtools::install_version("XML", version="3.99-0.6", repos=c("http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
-#1.34.0
-RUN R -e 'devtools::install_version("AnnotationForge", version="1.34.0", repos=c("https://bioconductor.org/packages/3.13/data/annotation", "https://bioconductor.org/packages/3.13/bioc"),upgrade = "never", force = TRUE)'
-RUN R -e 'devtools::install_github("guokai8/bioAnno", version="0.99.35")'
-RUN pip3 install snakemake==6.6.1
-RUN curl -L http://cpanmin.us | perl - --sudo Excel::Writer::XLSX
+ENV PLINK_HOME /usr/local/plink
+ENV PATH $PLINK_HOME:$PATH
 
-RUN R -e 'devtools::install_version("argparse", version="2.1.1", repos=c("http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
-RUN R -e 'devtools::install_version("betareg", version="3.1-4", repos=c("http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
-RUN R -e 'devtools::install_version("rtracklayer", version="1.52.1", repos=c("https://bioconductor.org/packages/3.13/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+RUN mkdir $PLINK_HOME && \
+    cd $PLINK_HOME && \
+    wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20210606.zip && \
+    unzip plink_linux_x86_64_20210606.zip -d $PLINK_HOME && \
+    rm plink_linux_x86_64_20210606.zip 
 
-#RUN pip install XlsxWriter==1.3.3
-#RUN apt-get remove --purge -y $BUILDPKGS && \
-#    rm -rf /var/lib/apt/lists/*
-USER xie186
-WORKDIR /home/xie186/
+# 1.8.1
+RUN R -e 'devtools::install_version("bigsnpr", version="1.8.1", repos=c("https://bioconductor.org/packages/3.13/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+# data.table
+RUN R -e 'devtools::install_version("data.table", version="1.14.2", repos=c("https://bioconductor.org/packages/3.13/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+# magrittr
+RUN R -e 'devtools::install_version("magrittr", version="2.0.1", repos=c("https://bioconductor.org/packages/3.13/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+
+    
+RUN useradd -s /bin/bash docker
+USER docker
+WORKDIR /home/docker/
 #ENTRYPOINT ["/usr/bin/docker_helper.0.1.0"]
 

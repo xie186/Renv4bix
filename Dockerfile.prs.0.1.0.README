@@ -1,0 +1,6 @@
+
+```
+docker build -t prs.0.1.0 -f Dockerfile.prs.0.1.0 .
+docker tag prs.0.1.0 xie186/r4bix:prs.0.1.0
+
+```

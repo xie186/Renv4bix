@@ -1,0 +1,36 @@
+################## BASE IMAGE ######################
+
+FROM continuumio/miniconda3:4.10.3
+
+
+################## METADATA ######################
+
+################## MAINTAINER ######################
+## Adopted from: https://github.com/byee4/monocle3-docker. Thank you!!!
+MAINTAINER Shaojun Xie <xie186@purdue.edu>
+
+RUN conda install -y -c conda-forge mamba
+RUN mamba install -y -c bioconda plink==1.90b6.21
+#RUN mamba install -y -c conda-forge libcurl==7.79.1
+#RUN mamba install -y -c bioconda bioconductor-deseq2==
+RUN mamba install -y -c conda-forge r-vctrs==0.3.8
+RUN mamba install -y -c amber.devries r-bigsnpr==1.8.1
+RUN mamba install -y -c bioconda r-ggplot2==2.2.1
+RUN mamba install -y -c conda-forge r-optparse==1.6.0
+
+RUN mamba install -y -c conda-forge nodejs=14.11.0 
+### Install Jupyterlab/IRKernel
+#RUN mamba install -y -c r -c bioconda -c conda-forge \
+#    python=3.6 
+
+RUN mamba install -y -c conda-forge jupyterlab
+#RUN mamba install -y -c conda-forge nodejs
+### For table of content
+#RUN jupyter nbextension enable --py --sys-prefix ipyevents
+
+#ENV CURL_CA_BUNDLE /opt/conda/lib/R/lib/microsoft-r-cacert.pem
+RUN Rscript -e 'install.packages(c("Rcpp","stringi"), repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'install.packages("IRkernel", repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'IRkernel::installspec(name = "R-rnaseq", displayname = "R-4.0.2", user = FALSE)'
+RUN jupyter labextension install @jupyterlab/toc
+

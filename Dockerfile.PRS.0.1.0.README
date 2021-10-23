@@ -1,0 +1,4 @@
+
+```
+docker build -t prs.0.1.0 -f Dockerfile.PRS.0.1.0 .
+```
