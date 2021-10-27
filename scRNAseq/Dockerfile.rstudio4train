@@ -1,0 +1,60 @@
+FROM rocker/rstudio:4
+
+MAINTAINER Shaojun Xie <xieshaojun0526@gmail.com>
+ 
+RUN apt-get clean all && \
+  apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -y \
+    libhdf5-dev \
+    libcurl4-gnutls-dev \
+    libssl-dev \
+    libxml2-dev \
+    libpng-dev \
+    libxt-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libglpk40 \
+    libgit2-28 \
+  && apt-get clean all && \
+  apt-get purge && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+RUN R -e 'install.packages("devtools")'
+RUN R -e 'install.packages("pkgbuild")'
+RUN R -e 'install.packages("remotes")'
+## Version: Seurat (v4.0.4)
+RUN R -e 'devtools::install_version("Seurat", version = "4.0.4", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+## Version: dplyr (v1.0.7)
+RUN R -e 'devtools::install_version("dplyr", version = "1.0.7", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+
+##  Lastest version on 10/14/2021
+RUN R -e 'devtools::install_github("xnnba1984/DoubletCollection@d7383e9cd72dbbf6a4a7b1b124d571489768fce0")'
+RUN pip3 install scrublet==0.2.3
+RUN pip3 install doubletdetection==3.0
+
+## Version: Leidenbase (v0.1.3)
+## 430f22af6982cc7d2e6e77f6b0df47bc970dcbce 
+RUN R -e 'devtools::install_github("cole-trapnell-lab/leidenbase@430f22af6982cc7d2e6e77f6b0df47bc970dcbce")'
+## Version: Monocle3 (v1.0.0) 
+## 004c096f3a3bdaf1e6709a65fb36f40ba775f1ab Monocle 3 1.0.0 Latest
+RUN R -e 'devtools::install_github("cole-trapnell-lab/monocle3@004c096f3a3bdaf1e6709a65fb36f40ba775f1ab")'
+## Version: Garnett (v0.1.13)
+## Garnett 0.1.13 Latest c68439142f3069db2c6f1333a7a4c22979db7186
+RUN R -e 'devtools::install_github("cole-trapnell-lab/garnett@c68439142f3069db2c6f1333a7a4c22979db7186")
+
+## Version: rmarkdown (v2.11)
+RUN R -e 'devtools::install_version("rmarkdown", version = "2.11", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: tidyverse (v1.3.1)
+RUN R -e 'devtools::install_version("tidyverse", version = "1.3.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+
+
+
+
+## Reference
+# https://davetang.org/muse/2021/04/24/running-rstudio-server-with-docker/
