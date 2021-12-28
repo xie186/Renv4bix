@@ -1,0 +1,69 @@
+FROM rocker/rstudio:4
+
+MAINTAINER Shaojun Xie <xieshaojun0526@gmail.com>
+ 
+RUN apt-get clean all && \
+  apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -y \
+    libhdf5-dev \
+    libcurl4-gnutls-dev \
+    libssl-dev \
+    libxml2-dev \
+    libpng-dev \
+    libxt-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libglpk40 \
+    libgit2-28 \
+    python3-virtualenv \
+    python3-pip \
+    libfontconfig1-dev \
+  && apt-get clean all && \
+  apt-get purge && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+RUN R -e 'install.packages("devtools")'
+RUN R -e 'install.packages("pkgbuild")'
+RUN R -e 'install.packages("remotes")'
+
+## Version: dplyr (v1.0.7)
+RUN R -e 'devtools::install_version("dplyr", version = "1.0.7", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+
+## Version: rmarkdown (v2.11)
+RUN R -e 'devtools::install_version("rmarkdown", version = "2.11", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: tidyverse (v1.3.1)
+RUN R -e 'devtools::install_version("tidyverse", version = "1.3.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: bookdown (v0.24)
+RUN R -e 'devtools::install_version("bookdown", version = "0.24", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: knitr (v1.37)
+RUN R -e 'devtools::install_version("knitr", version = "1.37", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: knitr (v1.37)
+RUN R -e 'devtools::install_version("knitr", version = "1.37", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: pheatmap (v1.0.12)
+RUN R -e 'devtools::install_version("pheatmap", version = "1.0.12", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: data.table (v1.14.2)
+RUN R -e 'devtools::install_version("data.table", version = "1.14.2", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: UpSetR (v1.4.0)
+RUN R -e 'devtools::install_version("UpSetR", version = "1.4.0", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: kableExtra (v1.3.4)
+RUN R -e 'devtools::install_version("kableExtra", version = "1.3.4", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: BiocManager (v1.30.16)
+RUN R -e 'devtools::install_version("BiocManager", version = "1.30.16", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: ropls (v1.26.0)
+RUN R -e 'devtools::install_version("ropls", version="1.26.0", repos="https://bioconductor.org/packages/3.14/bioc",upgrade = "never", force = TRUE)'
+## Version: reticulate (v1.22)
+RUN R -e 'devtools::install_version("reticulate", version = "1.22", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+# docker build -t bixbook:0.1.0 -f Dockerfile.rs4bix_book .
+# docker tag bixbook:0.1.0 xie186/r4bix:bixbook.0.1.0
+# docker push xie186/r4bix:bixbook.0.1.0
+
+# docker run --rm -p 8888:8787 -d --name rstudio_server -v ~/r_packages/:/packages  -e PASSWORD=password -e USERID=$(id -u) -e GROUPID=$(id -g) bixbook:0.1.0
+# docker stop 1e4124fdf6778e4c89ed5d7aeaa84f679e82bbd5b57b2aa58b4feae7fb487822
+
+# Reference
+# https://davetang.org/muse/2021/04/24/running-rstudio-server-with-docker/
