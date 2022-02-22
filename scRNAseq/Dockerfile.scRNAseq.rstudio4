@@ -53,7 +53,7 @@ RUN R -e 'devtools::install_github("cole-trapnell-lab/leidenbase@430f22af6982cc7
 RUN R -e 'devtools::install_github("cole-trapnell-lab/monocle3@004c096f3a3bdaf1e6709a65fb36f40ba775f1ab")'
 ## Version: Garnett (v0.1.13)
 ## Garnett 0.1.13 Latest c68439142f3069db2c6f1333a7a4c22979db7186
-RUN R -e 'devtools::install_github("cole-trapnell-lab/garnett@c68439142f3069db2c6f1333a7a4c22979db7186")
+RUN R -e 'devtools::install_github("cole-trapnell-lab/garnett@c68439142f3069db2c6f1333a7a4c22979db7186")'
 
 ## Version: rmarkdown (v2.11)
 RUN R -e 'devtools::install_version("rmarkdown", version = "2.11", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'

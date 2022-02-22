@@ -75,8 +75,8 @@ RUN R -e 'IRkernel::installspec(name = "R", displayname = "R-4.0.2", user = FALS
 RUN pip3 install snakemake==6.6.1
 
 RUN R -e 'install.packages("remotes")'
-## Version: Seurat 4.0.4
-RUN R -e 'devtools::install_version("Seurat", version = "4.0.4", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: Seurat 4.0.5
+RUN R -e 'devtools::install_version("Seurat", version = "4.0.5", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
 ## Version: dplyr 1.0.7
 RUN R -e 'devtools::install_version("dplyr", version = "1.0.7", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
 
@@ -107,7 +107,7 @@ WORKDIR /home/docker/
 
 
 #################################
-# docker build -t scrna.seurat4.0.4 -f Dockerfile.scRNAseq.seurat4.0.4 .
-# docker tag scrna.seurat4.0.4 xie186/r4bix:seurat4.0.4
-# docker push xie186/r4bix:seurat4.0.4
+# docker build -t scrna.seurat4.0.5 -f Dockerfile.scRNAseq.seurat4.0.5 .
+# docker tag scrna.seurat4.0.5 xie186/r4bix:seurat4.0.5
+# docker push xie186/r4bix:seurat4.0.5
 #################################
