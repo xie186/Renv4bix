@@ -92,6 +92,15 @@ RUN R -e 'devtools::install_version("tidyverse", version = "1.3.1", repos = "htt
 ## Version: markdown(v1.1)
 RUN R -e 'devtools::install_version("markdown", version = "1.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
 
+## Jan 31, 2022
+RUN R -e 'devtools::install_github("chris-mcginnis-ucsf/DoubletFinder@67fb8b5808eb16167ead5f9b439677cc24837554")'
+
+USER root
+
+RUN rm -rf /usr/bin/pip /usr/bin/python && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip
+
 ## List of user-installed R packages and their versions
 ## https://stackoverflow.com/a/40120266/3327344
 RUN R -e 'ip = as.data.frame(installed.packages()[,c(1,3:4)]); ip = ip[is.na(ip$Priority),1:2,drop=FALSE];ip'
@@ -104,5 +113,10 @@ WORKDIR /home/docker/
 ########################################################################
 ## docker build -t scrna.ptx.0.1.0 -f Dockerfile.scRNAseq4ptx.0.1.0 .
 ## docker tag scrna.ptx.0.1.0 xie186/r4bix:scrna.ptx.0.1.0
+##  docker push xie186/r4bix:scrna.ptx.0.1.0
 
-
+## For test
+## docker run -e PASSWORD=password -e USERID=$(id -u)  -d scrna.ptx.0.1.0:latest
+## docker container ls
+## docker exec -it  1884426c3827 python3
+##########################################################################
