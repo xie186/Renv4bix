@@ -95,11 +95,29 @@ RUN R -e 'devtools::install_version("markdown", version = "1.1", repos = "https:
 ## Jan 31, 2022
 RUN R -e 'devtools::install_github("chris-mcginnis-ucsf/DoubletFinder@67fb8b5808eb16167ead5f9b439677cc24837554")'
 
+## Version: celda (v1.10.0)
+RUN R -e 'devtools::install_version("celda", version="1.10.0", repos=c("https://bioconductor.org/packages/3.14/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+## Version: DropletUtils (v1.14.2)
+RUN R -e 'devtools::install_version("DropletUtils", version="1.14.2", repos=c("https://bioconductor.org/packages/3.14/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+## Version: DropletQC (v1.0.0)
+RUN R -e 'devtools::install_github("powellgenomicslab/DropletQC@v1.0.0")'
+## Version: UpsetR (v1.4.0)
+RUN R -e 'devtools::install_version("UpSetR", version = "1.4.0", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: edgeR (v3.36.0)
+RUN R -e 'devtools::install_version("edgeR", version="3.36.0", repos=c("https://bioconductor.org/packages/3.14/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+
+## Version: scProportionTest (v1.0.0)
+RUN R -e 'devtools::install_github("rpolicastro/scProportionTest@v1.0.0")'
+
+## Version: oct4th (v1.0.1)
+RUN pip install oct4th==1.0.1
+
 USER root
 
 RUN rm -rf /usr/bin/pip /usr/bin/python && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     ln -s /usr/bin/pip3 /usr/bin/pip
+
 
 ## List of user-installed R packages and their versions
 ## https://stackoverflow.com/a/40120266/3327344
@@ -117,6 +135,7 @@ WORKDIR /home/docker/
 
 ## For test
 ## docker run -e PASSWORD=password -e USERID=$(id -u)  -d scrna.ptx.0.1.0:latest
+## The command above will generate an ID. 
 ## docker container ls
 ## docker exec -it  1884426c3827 python3
 ##########################################################################
