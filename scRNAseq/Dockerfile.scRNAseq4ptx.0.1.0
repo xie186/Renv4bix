@@ -109,8 +109,20 @@ RUN R -e 'devtools::install_version("edgeR", version="3.36.0", repos=c("https://
 ## Version: scProportionTest (v1.0.0)
 RUN R -e 'devtools::install_github("rpolicastro/scProportionTest@v1.0.0")'
 
+## Version: ClusterProfiler (v4.2.2)
+RUN R -e 'devtools::install_version("clusterProfiler", version="4.2.2", repos=c("https://bioconductor.org/packages/3.14/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+## Version: org.Hs.eg.db (v3.14.0)
+RUN R -e 'devtools::install_version("org.Hs.eg.db", version="3.14.0", repos="https://bioconductor.org/packages/3.14/data/annotation", upgrade = "never", force = TRUE)'
+## Version: AnnotationHub (v3.2.2)
+RUN R -e 'devtools::install_version("AnnotationHub", version="3.2.2", repos=c("https://bioconductor.org/packages/3.14/bioc"), upgrade = "never", force = TRUE)'
+
+
+
 ## Version: oct4th (v1.0.1)
 RUN pip install oct4th==1.0.1
+
+RUN curl -L http://cpanmin.us | perl - --sudo Excel::Writer::XLSX
+
 
 USER root
 
