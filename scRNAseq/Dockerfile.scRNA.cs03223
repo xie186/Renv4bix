@@ -1,0 +1,160 @@
+
+#https://hub.docker.com/r/bioconductor/bioconductor_docker/tags?page=1&ordering=last_updated
+FROM bioconductor/bioconductor_docker:RELEASE_3_15
+
+MAINTAINER Shaojun Xie
+
+# This will make apt-get install without question
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && \
+    apt-get install -y apt-utils \
+                       libudunits2-dev \
+                       libhdf5-dev \
+                       gdal-bin \
+                       proj-bin \
+                       libproj-dev \
+                       libgsl-dev \
+                       libxml2 \
+                       libxml2-dev \
+                       libigraph0-dev \
+                       zlib1g-dev \
+                       libtool \
+                       bison \
+                       flex \
+                       automake \
+                       autoconf \
+                       libpng*-dev \
+                       libglpk-dev \
+                       xorg \
+                       libx11-dev \
+                       libglu1-mesa-dev \
+                       libfreetype*-dev \
+                       p7zip \
+                       build-essential \
+                       libssl-dev \
+                       libffi-dev \
+                       libxslt1-dev \
+                       python3 \
+                       python-dev \
+                       python3-dev \
+                       python3-pip \
+                       libxt-dev \
+                       libgtk2.0-dev \
+                       libcairo2-dev \
+                       xvfb \
+                       xauth \
+                       xfonts-base \
+                       libboost-all-dev 
+
+# update pip
+# update pip
+RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
+# install wheel
+RUN pip install wheel
+RUN pip install jupyterlab==3.4.7
+## https://github.com/jupyterlab/jupyterlab-toc
+## x means 12 here
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs
+RUN jupyter labextension install @jupyterlab/toc
+
+
+RUN R -e 'install.packages("devtools")'
+RUN R -e 'install.packages("pkgbuild")'
+
+# install cran packages
+#ADD install_cran.R /tmp/
+#RUN R -f /tmp/install_cran.R
+
+RUN R -e 'devtools::install_version("IRkernel", version = "1.1.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+RUN R -e 'IRkernel::installspec(name = "R", displayname = "R", user = FALSE)'
+RUN pip3 install snakemake==6.6.1
+
+
+## 10/14/2021
+RUN R -e 'devtools::install_github("xnnba1984/DoubletCollection@d7383e9cd72dbbf6a4a7b1b124d571489768fce0")'
+
+## Version: scrublet (v0.2.3)
+RUN pip3 install scrublet==0.2.3
+## Version: doubletdetection (v3.0)
+RUN pip3 install doubletdetection==3.0
+
+## Version: Seurat (v4.2.0)
+RUN R -e 'devtools::install_version("Seurat", version = "4.2.0", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: clusterProfiler (v4.4.4)
+RUN R -e 'devtools::install_version("clusterProfiler", version="4.4.4", repos=c("https://bioconductor.org/packages/3.15/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+## Version: openxlsx (v4.2.5)
+RUN R -e 'devtools::install_version("openxlsx", version = "4.2.5", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: rmarkdown (v2.11)
+RUN R -e 'devtools::install_version("rmarkdown", version = "2.11", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: tidyverse (v1.3.1)
+RUN R -e 'devtools::install_version("tidyverse", version = "1.3.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+## Version: markdown(v1.1)
+RUN R -e 'devtools::install_version("markdown", version = "1.1", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+## Jan 31, 2022
+RUN R -e 'devtools::install_github("chris-mcginnis-ucsf/DoubletFinder@67fb8b5808eb16167ead5f9b439677cc24837554")'
+
+RUN R -e 'devtools::install_version("celda", version="1.12.0", repos=c("https://bioconductor.org/packages/3.15/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_version("DropletUtils", version="1.16.0", repos=c("https://bioconductor.org/packages/3.15/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_github("powellgenomicslab/DropletQC@v1.0.0")'
+## Version: UpsetR (v1.4.0)
+RUN R -e 'devtools::install_version("UpSetR", version = "1.4.0", repos = "https://cran.rstudio.com/",upgrade = "never", force = TRUE)'
+
+## Version: scProportionTest (v1.0.0)
+RUN R -e 'devtools::install_github("rpolicastro/scProportionTest@v1.0.0")'
+
+RUN R -e 'devtools::install_version("org.Hs.eg.db", version="3.15.0", repos="https://bioconductor.org/packages/3.15/data/annotation", upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_version("AnnotationHub", version="3.4.0", repos=c("https://bioconductor.org/packages/3.15/bioc"), upgrade = "never", force = TRUE)'
+# Commit on  Aug 3, 2022
+RUN R -e 'devtools::install_github("BaderLab/scClustViz@cbde4a599eacc788dbf2d08a476615907a9f1052")'
+RUN R -e 'devtools::install_version("destiny", version="3.10.0", repos=c("https://bioconductor.org/packages/3.15/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_github(repo="farrellja/URD@v1.1.1")'
+RUN R -e 'devtools::install_version("SingleR", version="1.10.0", repos=c("https://bioconductor.org/packages/3.15/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_version("GSVA", version="1.44.5", repos=c("https://bioconductor.org/packages/3.15/bioc","http://cran.us.r-project.org"),upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_version("org.Mm.eg.db", version="3.15.0", repos="https://bioconductor.org/packages/3.15/data/annotation", upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_github("kharchenkolab/pagoda2@v1.0.10")'
+RUN R -e 'devtools::install_version("ReactomeGSA", version="1.10.0", repos=c("https://bioconductor.org/packages/3.15/bioc"),upgrade = "never", force = TRUE)'
+# Mar 20, 2021 
+RUN R -e 'devtools::install_github("liuqivandy/scRNABatchQC@32689ef428eeff0a6e97e6089cb9594d1f7c7b3d")'
+#RUN R -e 'devtools::install_version("scRNAseq", version="2.11.0", repos=c("https://bioconductor.org/packages/3.15/data/experiment"),upgrade = "never", force = TRUE)'
+RUN R -e 'devtools::install_github("LTLA/scRNAseq@c02d5860d443ccf43c3d86f606f2c8b25a08bd40")'
+RUN R -e 'devtools::install_github("velocyto-team/velocyto.R@0.6")'
+RUN R -e 'devtools::install_github("immunogenomics/harmony@6866e01e4d7e1729b46e98303ac7c38be1036248")'
+## Version: oct4th (v1.0.1)
+RUN pip install oct4th==1.0.1
+
+RUN curl -L http://cpanmin.us | perl - --sudo Excel::Writer::XLSX
+
+
+USER root
+
+RUN rm -rf /usr/bin/pip /usr/bin/python && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip
+
+
+## List of user-installed R packages and their versions
+## https://stackoverflow.com/a/40120266/3327344
+RUN R -e 'ip = as.data.frame(installed.packages()[,c(1,3:4)]); ip = ip[is.na(ip$Priority),1:2,drop=FALSE];ip'
+
+RUN useradd -s /bin/bash docker
+USER docker
+WORKDIR /home/docker/
+COPY Dockerfile.scRNA.cs03223 /home/docker/
+#ENTRYPOINT ["/usr/bin/docker_helper.0.1.0"]
+
+########################################################################
+## docker build -t scrna.cs03223 -f Dockerfile.scRNA.cs03223 .
+## docker tag scrna.cs03223 xie186/r4bix:scrna.cs03223
+##  docker push xie186/r4bix:scrna.cs03223
+
+## For test
+## docker run -e PASSWORD=password -e USERID=$(id -u)  -d scrna.cs03223:latest
+## The command above will generate an ID. 
+## docker container ls
+## docker exec -it  1884426c3827 python3
+##########################################################################
+                                                                                                           
